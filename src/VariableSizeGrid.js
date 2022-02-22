@@ -239,6 +239,7 @@ const getOffsetForIndexAndAlignment = (
   const size = itemType === 'column' ? props.width : props.height;
   const itemMetadata = getItemMetadata(itemType, props, index, instanceProps);
 
+
   // Get estimated total size after ItemMetadata is computed,
   // To ensure it reflects actual measurements instead of just estimates.
   const estimatedTotalSize =
@@ -246,13 +247,36 @@ const getOffsetForIndexAndAlignment = (
       ? getEstimatedTotalWidth(props, instanceProps)
       : getEstimatedTotalHeight(props, instanceProps);
 
+  let stickyOffsetSize = 0;
+
+  if (itemType === 'column') {
+    if (props.itemData.frozenColumns) {
+      const arr = new Array(props.itemData.frozenColumns).fill(0);
+      arr.forEach((v, i) => {
+        stickyOffsetSize += getItemMetadata(itemType, props, i, instanceProps)
+          .size;
+      });
+    }
+  } else {
+    if (props.itemData.showHeader) {
+      stickyOffsetSize += getItemMetadata(itemType, props, 0, instanceProps)
+        .size;
+    }
+  }
+
+
   const maxOffset = Math.max(
     0,
-    Math.min(estimatedTotalSize - size, itemMetadata.offset)
+    Math.min(estimatedTotalSize - size, itemMetadata.offset) -
+      (itemType === 'column' ? stickyOffsetSize : 0)
   );
   const minOffset = Math.max(
     0,
-    itemMetadata.offset - size + scrollbarSize + itemMetadata.size
+    itemMetadata.offset -
+      size +
+      scrollbarSize +
+      itemMetadata.size +
+      (itemType === 'row' ? stickyOffsetSize : 0)
   );
 
   if (align === 'smart') {

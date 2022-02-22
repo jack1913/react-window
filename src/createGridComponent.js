@@ -285,7 +285,7 @@ export default function createGridComponent({
       rowIndex?: number,
     }): void {
       const { columnCount, height, rowCount, width } = this.props;
-      const { scrollLeft, scrollTop } = this.state;
+      const { scrollLeft, scrollTop, instance } = this.state;
       const scrollbarSize = getScrollbarSize();
 
       if (columnIndex !== undefined) {
