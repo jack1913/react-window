@@ -76,8 +76,6 @@ const getEstimatedTotalWidth = (
   const numUnmeasuredItems = columnCount - lastMeasuredColumnIndex - 1;
   const totalSizeOfUnmeasuredItems = numUnmeasuredItems * estimatedColumnWidth;
 
-  // console.log('getEstimatedTotalWidth', totalSizeOfMeasuredRows, totalSizeOfUnmeasuredItems);
-
   return totalSizeOfMeasuredRows + totalSizeOfUnmeasuredItems;
 };
 
@@ -281,15 +279,6 @@ const getOffsetForIndexAndAlignment = (
       (itemType === 'row' ? stickyOffsetSize : 0)
   );
 
-  if (itemType === 'row') {
-    console.log(
-      'getOffsetForIndexAndAlignment',
-      maxOffset,
-      minOffset,
-      scrollOffset
-    );
-  }
-
   if (align === 'smart') {
     if (scrollOffset >= minOffset - size && scrollOffset <= maxOffset + size) {
       align = 'auto';
@@ -308,26 +297,14 @@ const getOffsetForIndexAndAlignment = (
     case 'auto':
     default:
       if (scrollOffset >= minOffset && scrollOffset <= maxOffset) {
-        if (itemType === 'row') {
-          console.log('max> & <min');
-        }
         return scrollOffset;
       } else if (minOffset > maxOffset) {
         // Because we only take into account the scrollbar size when calculating minOffset
         // this value can be larger than maxOffset when at the end of the list
-        if (itemType === 'row') {
-          console.log('min > max');
-        }
         return minOffset;
       } else if (scrollOffset < minOffset) {
-        if (itemType === 'row') {
-          console.log('<min');
-        }
         return minOffset;
       } else {
-        if (itemType === 'row') {
-          console.log('else');
-        }
         return maxOffset;
       }
   }
