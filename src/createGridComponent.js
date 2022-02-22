@@ -312,6 +312,31 @@ export default function createGridComponent({
       const verticalScrollbarSize =
         estimatedTotalHeight > height ? scrollbarSize : 0;
 
+      // CUSTOM CODE
+      // console.log('react-window', this.props, this.state);
+
+      const { frozenColumns, showHeader } = instance.props.itemData;
+
+      const headerOffset = getRowHeight(this.props, 0, this._instanceProps);
+      const frozenColumnsOffset = getColumnWidth(
+        this.props,
+        0,
+        this._instanceProps
+      );
+
+      const scrollLeftOffset = getOffsetForColumnAndAlignment(
+        this.props,
+        columnIndex,
+        align,
+        scrollLeft,
+        this._instanceProps,
+        verticalScrollbarSize
+      );
+
+      console.log('scrollTo');
+
+      // console.log(scrollLeft, scrollLeftOffset, headerOffset, frozenColumnsOffset);
+
       this.scrollTo({
         scrollLeft:
           columnIndex !== undefined
